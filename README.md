@@ -32,15 +32,10 @@ This is a client-side web application. You can run it by simply opening the `ind
 
 The visualizer should load with a default random dataset. Use the buttons and checkboxes in the menu to interact with the application.
 
-## Screenshots
+## Screenshot
 
-*(Add screenshots here to showcase the visualizer)*
+![image](https://github.com/user-attachments/assets/b21e7702-2bff-4242-bf38-09443751d93d)
 
-*   Screenshot 1: Initial state with random data.
-*   Screenshot 2: Clustering in progress.
-*   Screenshot 3: Final clustering result with stats.
-*   Screenshot 4: Responsive layout example.
-*   Screenshot 5: CSV upload/export functionality.
 
 ## Project Structure
 
