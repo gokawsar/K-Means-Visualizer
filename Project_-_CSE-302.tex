@@ -1,0 +1,228 @@
+\documentclass[12pt]{report}
+\usepackage[a4paper, left=3.17cm, right=3.17cm, top=1.5cm, bottom=1.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{chemformula}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{tabularx,booktabs}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{comment}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage{cite}
+\usepackage[colorlinks, linkcolor=black, anchorcolor=black, citecolor=black]{hyperref}
+\usepackage{graphicx}
+\setlength{\parskip}{0.5em}
+\title{Design and Simulation of  Hotel Network Infrastructure Using Cisco Packet Tracer
+}
+\author{\textup{MD KAWSAR AHMED}}
+
+
+
+\begin{document}
+    \input{title/title.tex}
+    \tableofcontents
+
+% Chapter 1 - Introduction
+\chapter{Introduction}
+
+\section{Overview}
+This project report details the development of a web-based K-means clustering visualizer, focusing on the application of web programming technologies to create an interactive data visualization tool. The project demonstrates how front-end technologies can be used to implement and visualize machine learning algorithms directly in a web browser.
+
+\section{Motivation}
+The motivation behind this project for a web programming course is to demonstrate the power of front-end web technologies (HTML, CSS, and JavaScript) in building complex, interactive applications. Developing a K-means visualizer provides a practical case study for applying these technologies to data visualization and algorithmic implementation within a web browser environment.
+
+\section{Problem Definition}
+The problem addressed by this project is the need for a clear and intuitive method to understand the K-means clustering algorithm. While the mathematical concepts are well-defined, visualizing the iterative process of centroid movement and data point reassignment can be challenging without a dedicated tool.
+
+\subsection{Problem Statement}
+Existing explanations of K-means often rely on static diagrams or complex code examples, making it difficult for learners to grasp the dynamic nature of the algorithm. A lack of interactive visualization hinders the understanding of how different initial conditions or data distributions impact the final clustering results.
+
+\subsection{Complex Engineering Problem}
+The development of an effective K-means visualizer as a web application involves addressing several complex engineering challenges from a web programming perspective, including:
+\begin{itemize}
+    \item \textbf{Client-Side Algorithmic Execution:} Implementing the iterative K-means algorithm efficiently in JavaScript to run directly in the user's browser without a backend.
+    \item \textbf{Dynamic Data Visualization:} Creating a responsive graphical interface using web technologies (HTML Canvas, Chart.js) that updates in real-time as the algorithm progresses.
+    \item \textbf{Interactive User Interface:} Designing and implementing controls (HTML buttons, input elements) that allow users to easily interact with the visualizer, modify parameters, and trigger actions.
+    \item \textbf{Data Input/Output:} Implementing functionality to load data from local files (CSV) and export results, utilizing browser file handling APIs.
+\end{itemize}
+
+\section{Design Goal}
+The primary goals of this web programming project are to design and implement a K-means clustering visualizer as a single-page web application that is:
+\begin{itemize}
+    \item \textbf{Intuitive Interface:} Utilizing HTML and CSS to create a user-friendly layout and controls for easy interaction.
+    \item \textbf{Interactive Visualization:} Employing JavaScript and a charting library (Chart.js) to dynamically render data and the clustering process in real-time within the browser.
+    \item \textbf{Client-Side Functionality:} Implementing the entire K-means algorithm and data handling logic using only client-side JavaScript.
+\end{itemize}
+
+\section{Application}
+The developed K-means clustering visualizer, built as a web application, has numerous applications in various fields:
+\begin{itemize}
+    \item \textbf{Educational Tool:} Serves as an interactive resource for students learning about K-means clustering and front-end web development.
+    \item \textbf{Online Demonstrations:} Can be easily deployed and shared online for demonstrating the K-means algorithm without requiring any software installation.
+    \item \textbf{Rapid Prototyping:} Provides a quick way for developers to prototype and visualize clustering results directly in the browser.
+\end{itemize}
+
+
+% Chapter 2 - Design/Development/Implementation
+\newpage
+\chapter{Design, Development and Implementation of the Project}
+
+\section{Introduction}
+This chapter details the design, development, and implementation of the K-means clustering visualizer as a web application. We will cover the front-end architecture, the role of various web technologies, and the implementation steps taken to build this interactive tool that runs entirely in the browser.
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=1\linewidth]{Figures/visualizer_architecture_web.png}
+        \caption{Web Application Architecture of the K-means Visualizer (SS)}
+\end{figure}
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=1\linewidth]{Figures/topology.png}
+        \caption{floor-wise network topology structured}
+\end{figure}
+\section{Project Details}
+
+\subsection{Components}
+The K-means visualizer web application is comprised of the following key front-end components:
+\begin{itemize}
+  \item \textbf{HTML Structure:} Defines the layout and elements of the user interface, including the canvas for the chart, control buttons, input fields, and data table container.
+  \item \textbf{CSS Styling:} Provides the visual presentation of the application, controlling layout, colors, fonts, and responsiveness.
+  \item \textbf{JavaScript Logic:} Implements the core K-means algorithm, handles user interactions, manages data, updates the visualization, and performs data import/export.
+  \item \textbf{Chart.js Library:} A third-party JavaScript library used for rendering the scatter plot visualization on the HTML canvas.
+\end{itemize}
+\subsection{Verification}
+The correctness of the client-side K-means implementation and the visualization was verified through several methods common in web development:
+\begin{itemize}
+    \item \textbf{Manual Inspection:} Visually observing the clustering process on small, known datasets to ensure data points are assigned to the correct clusters and centroids converge as expected.
+    \item \textbf{Console Logging:} Using JavaScript `console.log` to inspect variable values, data structures, and algorithm progress during execution.
+    \item \textbf{Browser Developer Tools:} Utilizing the debugging capabilities of web browsers to step through the JavaScript code and identify any logical errors in the algorithm or visualization updates.
+    \item \textbf{Comparison with Expected Output:} Comparing the final cluster assignments and centroid positions with results obtained from trusted K-means implementations on the same datasets.
+\end{itemize}
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.65\linewidth]{Figures/clustering_result_web_ss1.jpg}
+        \caption{Example Web Visualizer Clustering Result (SS)}
+        \centering
+        \includegraphics[width=0.65\linewidth]{Figures/clustering_result_web_ss2.jpg}
+        \caption{Another Web Visualizer Clustering Result Example (SS)}
+\end{figure}
+\newpage
+
+\section{Implementation}
+
+\subsection{Workflow}
+The implementation of the K-means visualizer as a web application followed a standard front-end development workflow:
+\begin{enumerate}
+    \item \textbf{HTML Structure Definition:} Laying out the basic structure of the web page with semantic HTML5 elements for the chart container, control panel, and data table.
+    \item \textbf{CSS Styling:} Applying CSS rules to style the layout, appearance, and responsiveness of the application, ensuring a visually appealing and user-friendly interface across different devices.
+    \item \textbf{JavaScript Logic Implementation:} Writing JavaScript code to implement the K-means algorithm, handle user events (button clicks, file uploads), manage data points and centroids, and interact with the charting library.
+    \item \textbf{Chart.js Integration:} Utilizing the Chart.js library to create and update the scatter plot visualization dynamically based on the K-means algorithm's progress and results.
+    \item \textbf{Data Handling Implementation:} Adding JavaScript functions to generate random data, parse uploaded CSV files, and generate CSV data for export.
+    \item \textbf{Interactive Features Development:} Implementing features like adding/removing clusters, resetting data, randomizing colors, and toggling the visibility of cluster centers, spread, and outliers.
+\end{enumerate}
+\subsection{Tools and Technologies}
+The project was implemented using the following front-end web development tools and technologies:
+\begin{itemize}
+    \item \textbf{Web Technologies:} HTML5 (for structure), CSS3 (for styling), JavaScript (for dynamic behavior and algorithm implementation).
+    \item \textbf{JavaScript Library:} Chart.js (for data visualization).
+    \item \textbf{Development Environment:} Visual Studio Code (for coding, debugging, and project management).
+    \item \textbf{Browser Developer Tools:} Used extensively for debugging JavaScript code, inspecting HTML and CSS, and monitoring network activity.
+\end{itemize}
+\subsection{Key Configurations}
+Key configurations and implementation details from a web programming perspective include:
+\begin{itemize}
+    \item \textbf{Responsive Design:} Using CSS media queries and flexible box layouts (Flexbox) to ensure the visualizer is usable on various screen sizes.
+    \item \textbf{Client-Side Data Processing:} Implementing the entire K-means algorithm in JavaScript, performing all computations directly in the user's browser.
+    \item \textbf{DOM Manipulation:} Using JavaScript to dynamically update the HTML content, such as the data table and statistics display.
+    \item \textbf{Event Handling:} Implementing JavaScript event listeners to respond to user interactions with buttons, checkboxes, and file input.
+    \item \textbf{Canvas Rendering:} Utilizing the HTML5 Canvas element and Chart.js to render and update the scatter plot visualization efficiently.
+    \item \textbf{File API Usage:} Employing the browser's File API to handle local file uploads (CSV import) and create downloadable files (CSV export).
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/visualizer_controls_web_ss.jpg}
+    \caption{Web Visualizer Controls (SS)}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/clustering_in_progress_web_ss.jpg}
+    \caption{Web Visualizer Clustering in Progress (SS)}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/final_clustering_web_ss.jpg}
+    \caption{Final Web Visualizer Clustering Result (SS)}
+\end{figure}
+% Chapter 3 - Performance Evaluation
+\newpage
+\chapter{Evaluation}
+
+\section{Procedure}
+The evaluation of the K-means visualizer, from a web programming perspective, involved testing its performance, usability, and the effectiveness of the implemented web technologies. The following aspects were evaluated:
+\begin{itemize}
+    \item \textbf{Client-Side Performance:} Assessing the execution speed of the JavaScript-based K-means algorithm and visualization updates in different browsers and on various devices.
+    \item \textbf{Responsiveness:} Evaluating how well the web application adapts its layout and functionality to different screen sizes using CSS media queries and Flexbox.
+    \item \textbf{User Interface Usability:} Gathering feedback on the intuitiveness and ease of use of the HTML form elements, buttons, and the overall layout.
+    \item \textbf{Data Handling Functionality:} Testing the reliability and ease of use of the CSV upload and export features implemented using the browser's File API.
+    \item \textbf{Visualization Rendering:} Assessing the smoothness and accuracy of the data visualization using Chart.js on the HTML Canvas.
+\end{itemize}
+\section{Results and Analysis}
+\subsection{Client-Side Performance}
+The client-side JavaScript implementation of K-means performed adequately for small to medium datasets. Performance was observed to be dependent on the number of data points and clusters, as expected. Browser JavaScript engine optimizations played a significant role in execution speed. For larger datasets, a noticeable delay was observed, highlighting the limitations of purely client-side processing for computationally intensive tasks.
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.65\linewidth]{Figures/web_performance_chart_ss.jpg}
+        \caption{Client-Side Performance Evaluation Chart (SS)}
+\end{figure}
+\subsection{Responsiveness and Usability}
+The implementation of CSS media queries and Flexbox resulted in a responsive layout that adjusted well to different screen sizes, providing a usable interface on both desktop and mobile devices. User feedback indicated that the HTML controls were intuitive and the overall user interface was easy to navigate, allowing users to easily interact with the visualizer and its features.
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.65\linewidth]{Figures/web_usability_feedback_ss.jpg}
+        \caption{Responsive User Interface Screenshot (SS)}
+\end{figure}
+\subsection{Data Handling and Visualization}
+The CSV upload and export functionalities, implemented using the File API, worked as expected, allowing users to easily load their own data and save the clustered results. The Chart.js library effectively rendered the scatter plot and allowed for dynamic updates of data points and centroids, providing a clear visualization of the clustering process. The interactive features like hovering and clicking on data points were successfully implemented using JavaScript event listeners.
+\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.65\linewidth]{Figures/data_handling_ss.jpg}
+        \caption{CSV Import/Export Functionality (SS)}
+\end{figure}
+\section{Discussion}
+The evaluation demonstrates the successful application of front-end web programming technologies to build an interactive data visualization tool. The project effectively utilizes HTML for structure, CSS for presentation and responsiveness, and JavaScript for implementing the algorithm, handling user interaction, and managing data. The integration of a third-party library like Chart.js showcases how external resources can be leveraged in web projects. While client-side performance has limitations for very large datasets, the visualizer serves as a valuable educational tool for understanding K-means and practical web development concepts.
+
+% Chapter 4 - Conclusion
+\newpage
+\chapter{Conclusion}
+
+\section{Discussion}
+The project successfully demonstrated the implementation and visualization of the K-means clustering algorithm as a client-side web application. By leveraging HTML, CSS, and JavaScript, we were able to create an interactive tool that runs directly in the browser, showcasing the capabilities of front-end web programming for data visualization and algorithm implementation. The integration of the Chart.js library proved effective for rendering the dynamic scatter plot.
+\section{Limitations}
+While the web-based visualizer is effective for educational purposes and exploring smaller datasets, it has certain limitations inherent to client-side web programming:
+\begin{itemize}
+    \item \textbf{Performance on Large Datasets:} The execution of the K-means algorithm and rendering of large datasets purely in client-side JavaScript can lead to performance bottlenecks and a less responsive user interface.
+    \item \textbf{Browser Compatibility:} While efforts were made to ensure compatibility, variations in browser JavaScript engines and rendering capabilities might affect the visualizer's performance and appearance across different browsers.
+    \item \textbf{Security Concerns:} Handling sensitive data solely on the client-side might not be suitable for all applications due to potential security risks.
+    \item \textbf{Complexity of Advanced Features:} Implementing more complex machine learning algorithms or advanced visualization techniques purely in client-end JavaScript can become significantly challenging and less efficient compared to server-side implementations or dedicated libraries.
+\end{itemize}
+\section{Future Work}
+Several areas can be explored for future work to enhance the web-based K-means visualizer and address its current limitations:
+\begin{itemize}
+    \item \textbf{Performance Optimization:} Implement performance optimizations such as using Web Workers to run the K-means algorithm in a background thread, preventing the main UI thread from freezing. Exploring WebAssembly for computationally intensive parts could also be beneficial.
+    \item \textbf{Backend Integration:} For handling larger datasets and more complex computations, integrate a backend using technologies like Node.js, Python (Flask/Django), or others. This would allow offloading heavy processing from the client-side.
+    \item \textbf{Framework Adoption:} Rebuilding the visualizer using a modern front-end framework like React, Vue, or Angular could improve code structure, maintainability, and scalability for adding more features.
+    \item \textbf{Enhanced Visualization Libraries:} Explore more advanced visualization libraries or build custom rendering logic using D3.js for greater flexibility and performance with complex visualizations.
+    \item \textbf{Server-Side Data Handling:} Implement server-side data uploading, processing, and storage for improved security and performance when dealing with larger or sensitive datasets.
+    \item \textbf{Containerization and Deployment:} Package the application using Docker and explore deployment options on platforms like Netlify, Vercel, or cloud services for easier sharing and accessibility.
+\end{itemize}
+
+\nocite{*}
+\bibliographystyle{IEEEtran}
+\bibliography{Ref}
+
+\end{document}
+

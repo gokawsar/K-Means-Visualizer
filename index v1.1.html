@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>K-Means Clustering Visualizer - Flashing Centroids</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #1f4743;
+      color: #c5c6c7;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding-top: 60px; /* Adjusted for fixed header */
+      padding-right: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      display: flex; /* Use flexbox for the main layout */
+      flex-direction: column; /* Stack elements vertically */
+      align-items: center; /* Center elements horizontally */
+      justify-content: center; /* Center elements vertically */
+      height: 90vh; /* Full viewport height */
+      overflow-x: hidden; /* Prevent horizontal overflow */
+      overflow-y: auto;   /* Allow vertical scrolling */
+
+    }
+    h1 {
+      color: #66fcf1;
+      text-align: center;
+      animation: flash 1.5s infinite alternate;
+      position: fixed;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: #1f4743; /* Match body background */
+      padding-bottom: 10px; /* Space below text */
+      margin: 0; /* Reset default h1 margin */
+    }
+    @keyframes flash {
+      0% { color: #66fcf1; }
+      100% { color: #45a29e; }
+    }
+    .main-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    button {
+      background: #45a29e;
+      border: none;
+      color: #0b0c10;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+      width: 180px;
+    }
+    button:hover {
+      background: #66fcf1;
+      color: #1f2833;
+    }
+    canvas {
+      background: #1f2833;
+      border: 2px solid #45a29e;
+      border-radius: 8px;
+    }
+    .preview-container {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 10px;
+      background: #1f2833;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #45a29e;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #45a29e;
+      text-align: center;
+    }
+    th {
+      background: #45a29e;
+      color: #0b0c10;
+    }
+
+    /* New styles for the layout */
+    .menu {
+      width: auto;
+      background: #1f2833;
+      border: 2px solid #45a29e;
+      border-radius: 8px;
+      padding: 10px;
+      margin-right: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu button {
+      margin-bottom: 10px; /* Add spacing between buttons */
+    }
+
+    .main-content {
+      flex: 1; /* Take up remaining space */
+      display: flex;
+      justify-content: center;
+    }
+
+    .table-container {
+      width: 300px;
+      background: #1f2833;
+      border: 2px solid #45a29e;
+      border-radius: 8px;
+      padding: 10px;
+      margin-left: 20px;
+      max-height: 500px; /* Set maximum height for the table container */
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
+
+    #dataTableContainer {
+      max-height: 450px; /* Adjust to fit within the table container */
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>K-Means Clustering Visualizer</h1>
+
+<div style="display: flex;">
+  <div class="menu">
+    <button onclick="runKMeans()">Run Clustering</button>
+    <button onclick="addCluster()">Add Cluster</button>
+    <button onclick="reduceCluster()">Reduce Cluster</button>
+    <button onclick="resetData()">Reset Data</button>
+  </div>
+
+  <div class="main-content">
+    <canvas id="clusterChart" width="700" height="500"></canvas>
+  </div>
+
+  <div class="table-container">
+    <div class="preview-container" id="dataTableContainer"></div>
+  </div>
+</div>
+
+<script>
+  let points = [];
+  let centroids = [];
+  let k = 3;
+  let chart = null;
+  let pulse = 1;
+  let pulseDirection = 1;
+
+  class Point {
+    constructor(age, score) {
+      this.age = age;
+      this.score = score;
+      this.cluster = null;
+    }
+  }
+
+  function generateRandomData(n = 50) {
+    const data = [];
+    for (let i = 0; i < n; i++) {
+      const age = Math.floor(Math.random() * 40) + 20;
+      const score = Math.floor(Math.random() * 80) + 10;
+      data.push(new Point(age, score));
+    }
+    return data;
+  }
+
+  function resetData() {
+    points = generateRandomData();
+    runKMeans();
+  }
+
+  function addCluster() {
+    if (k < 10) {
+      k++;
+      runKMeans();
+    }
+  }
+
+  function reduceCluster() {
+    if (k > 1) {
+      k--;
+      runKMeans();
+    }
+  }
+
+  function runKMeans() {
+    if (points.length === 0) resetData();
+    centroids = [];
+    for (let i = 0; i < k; i++) {
+      const p = points[Math.floor(Math.random() * points.length)];
+      centroids.push(new Point(p.age, p.score));
+    }
+
+    let changed = true;
+    while (changed) {
+      changed = false;
+      points.forEach(p => {
+        let minDist = Infinity;
+        let clusterIndex = null;
+        centroids.forEach((c, idx) => {
+          const dist = Math.hypot(p.age - c.age, p.score - c.score);
+          if (dist < minDist) {
+            minDist = dist;
+            clusterIndex = idx;
+          }
+        });
+        if (p.cluster !== clusterIndex) {
+          changed = true;
+          p.cluster = clusterIndex;
+        }
+      });
+
+      centroids.forEach((c, idx) => {
+        const clusterPoints = points.filter(p => p.cluster === idx);
+        if (clusterPoints.length > 0) {
+          const avgAge = clusterPoints.reduce((sum, p) => sum + p.age, 0) / clusterPoints.length;
+          const avgScore = clusterPoints.reduce((sum, p) => sum + p.score, 0) / clusterPoints.length;
+          c.age = avgAge;
+          c.score = avgScore;
+        }
+      });
+    }
+
+    drawChart(points, centroids);
+    displayDataTable(points);
+  }
+
+  function drawChart(points, centroids) {
+    const neonColors = ["#ff00ff", "#00ffff", "#39ff14", "#ffea00", "#ff8300", "#ff3333", "#ff66c4", "#66ff66"];
+    const datasets = [];
+
+    for (let i = 0; i < k; i++) {
+      datasets.push({
+        label: `Cluster ${i + 1}`,
+        data: points.filter(p => p.cluster === i).map(p => ({ x: p.age, y: p.score })),
+        backgroundColor: neonColors[i % neonColors.length],
+        borderColor: neonColors[i % neonColors.length],
+        borderWidth: 2,
+        pointRadius: 6,
+        pointHoverRadius: 10
+      });
+    }
+
+    datasets.push({
+      label: 'Centroids',
+      data: centroids.map(c => ({ x: c.age, y: c.score })),
+      backgroundColor: '#ffffff',
+      borderColor: '#ffffff',
+      pointRadius: 10 * pulse,
+      pointHoverRadius: 12 * pulse,
+      pointStyle: 'star',
+      borderWidth: 3
+    });
+
+    const ctx = document.getElementById('clusterChart').getContext('2d');
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'scatter',
+      data: { datasets: datasets },
+      options: {
+        plugins: {
+          legend: { position: 'top', labels: { color: '#66fcf1' } },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                if (context.dataset.label !== 'Centroids') {
+                  const p = context.raw;
+                  const c = centroids[points[context.dataIndex].cluster];
+                  const dist = Math.hypot(p.x - c.age, p.y - c.score).toFixed(2);
+                  return `Age: ${p.x}, Score: ${p.y} (Distance: ${dist})`;
+                }
+              }
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Age', color: '#c5c6c7' }, ticks: { color: '#66fcf1' }},
+          y: { title: { display: true, text: 'Spending Score', color: '#c5c6c7' }, ticks: { color: '#66fcf1' }}
+        },
+        hover: {
+          mode: 'nearest',
+          onHover: (e, activeEls) => {
+            const canvas = document.getElementById('clusterChart');
+            const ctx = canvas.getContext('2d');
+            if (chart) {
+              chart.update();
+            }
+            if (activeEls.length) {
+              const point = points[activeEls[0].index];
+              const centroid = centroids[point.cluster];
+              ctx.beginPath();
+              ctx.moveTo(activeEls[0].element.x, activeEls[0].element.y);
+              ctx.lineTo(chart.scales.x.getPixelForValue(centroid.age), chart.scales.y.getPixelForValue(centroid.score));
+              ctx.strokeStyle = '#ffffff';
+              ctx.lineWidth = 1.5;
+              ctx.setLineDash([5, 3]);
+              ctx.stroke();
+              ctx.setLineDash([]);
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function displayDataTable(points) {
+    const container = document.getElementById('dataTableContainer');
+    let html = '<table><tr><th>#</th><th>Age</th><th>Score</th><th>Cluster</th></tr>';
+    points.forEach((p, i) => {
+      html += `<tr><td>${i+1}</td><td>${p.age}</td><td>${p.score}</td><td>${p.cluster+1}</td></tr>`;
+    });
+    html += '</table>';
+    container.innerHTML = html;
+  }
+
+  // Centroid Pulsing Animation
+  setInterval(() => {
+    if (pulse >= 1.2) pulseDirection = -1;
+    if (pulse <= 0.8) pulseDirection = 1;
+    pulse += 0.02 * pulseDirection;
+    if (chart) chart.update();
+  }, 50);
+
+  resetData(); // Initial run
+</script>
+
+</body>
+</html>
